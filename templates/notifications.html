@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+{% block title %} Notifications {% endblock %}
+{% block content %}
+<h2>Notifications Page</h2>
+<div>
+    {% if notifications %}
+    <table style="font-size: 10px;" class="table table-striped table-bordered table-hover  table-sm">
+        <thead>
+            <tr>
+                <th>Activity Time</th>
+                <th>Reason</th>
+                <th>Data submitted</th>
+                <th>Country</th>
+                <th>Coordinates</th>
+                <th>IP Address</th>
+                <th>Session Status</th>
+                <th>IP/Account Status</th>
+            </tr>
+        </thead>
+
+        {% for notification in notifications %}
+        <tr>
+            <td>{{notification["time"]}}</td>
+            <td>{{notification["reason"]}}</td>
+            <td>{{notification["malicious_input"]}}</td>
+            <td>{{notification["country"]}}</td>
+            <td>{{notification["coordinates"]}}</td>
+            <td>{{notification["ip_address"]}}</td>
+            <td>
+                {% if notification["is_active_session"]==1 %}
+                <div>Active Session</div>
+                {%else%}
+                <div>Inactive Session</div>
+                {%endif%}
+            </td>
+            <td>
+                {% if notification["ip_blocked"]==1 %}
+                <div class="text-success">Blocked</div>
+                {% else %}
+                <div class="text-danger">Activated</div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {%else%}
+    <div class="alert alert-success">You don't have any notifications</div>
+    {% endif%}
+</div>
+{% endblock %}

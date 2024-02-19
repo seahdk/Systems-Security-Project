@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+<h2>Admin Panel</h2>
+<table class="table table-striped table-bordered table-hover  table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>Timestamp</th>
+            <th>User Name</th>
+            <th>Email Address</th>
+            <th>IP Address</th>
+            <th>City</th>
+            <th>Region</th>
+            <th>Country</th>
+            <th>Continent Code</th>
+            <th>Location Coordinates</th>
+            <th>Network Provider</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    {% for log in logs%}
+    <tr>
+        <td>{{log["activity_time"]}}</td>
+        <td>{{log["username"]}}</td>
+        <td>{{log["email"]}}</td>
+        <td>{{log["ip_address"]}}</td>
+        <td>{{log["city"]}}</td>
+        <td>{{log["region"]}}</td>
+        <td>{{log["country_name"]}}</td>
+        <td>{{log["continent_code"]}}</td>
+        <td>({{log["latitude"]}}, {{log["longitude"]}})</td>
+        <td>{{log["network_provider"]}}</td>
+        <td>{{log["is_active_session"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <!-- Bootstrap CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body class="loggedin">
+    <nav class="navtop">
+        <div>
+            <h1>MyWebApp</h1>
+            {% block nav%}{%endblock%}
+            {% if session["role"]=="admin" %}
+            <a href="{{ url_for('admin') }}"><i class="fas fa-gear"></i>Admin Panel</a>
+            {% else%}
+            <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>
+            {%endif%}
+            <a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Profile</a>
+            <a href="{{ url_for('activity') }}"><i class="fas fa-chart-line"></i>Login Activity</a>
+
+            {% if session["role"]=="admin" %}
+            <a href="{{ url_for('admin_notifications') }}"><i class="fas fa-bell"></i>Notifications</a>
+            {% else%}
+            <a href="{{ url_for('notifications') }}"><i class="fas fa-bell"></i>Notifications</a>
+            {%endif%}
+
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </nav>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

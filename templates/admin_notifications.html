@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+{% block title %} Notifications {% endblock %}
+{% block content %}
+<h2>Notifications Page</h2>
+<div>
+
+    {% if notifications %}
+    {% for notification in notifications %}
+
+    <div type="button" class="collapsible">
+
+        {{notification["time"]}} :
+        <i>{{notification["reason"]}}</i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+
+    </div>
+    <div class="details">
+        <table class=" table table-bordered table-hover  table-sm">
+
+            <tr>
+                <td>Activity Time</td>
+                <td>{{notification["time"]}}</td>
+            </tr>
+            <tr>
+                <td>Reason</td>
+                <td>{{notification["reason"]}}</td>
+            </tr>
+            <tr>
+                <td>Data</td>
+                <td>{{notification["malicious_input"]}}</td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>{{notification["country"]}}</td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td>{{notification["coordinates"]}}</td>
+            </tr>
+            <tr>
+                <td>IP Address</td>
+                <td>{{notification["ip_address"]}}</td>
+            </tr>
+            <tr>
+                <td>Session Status</td>
+                <td>
+                    {% if notification["is_active_session"]==1 %}
+                    <div>Active Session</div>
+                    {%else%}
+                    <div>Inactive Session</div>
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>IP/Account Status</td>
+                <td>
+                    {% if notification["ip_blocked"]=='1' %}
+                    <div class="text-success">Blocked</div>
+                    {% else %}
+                    <div class="text-danger">Active</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td>{{notification["username"]}}</td>
+            </tr>
+            <tr>
+                <td>Recommended Action(s)</td>
+                <td>
+                    {% if notification["ip_blocked"]=='1' %}
+                    {% if notification["is_active_session"]=='1' %}
+                    This user was previously blocked. You may unblock the account after reviewing the all its
+                    security-related
+                    activities.
+                    <a class="btn btn-sm btn-danger"
+                        href="{{ url_for('unblock_user', username=notification['username']) }}" role="button">Unblock
+                        User</a>
+                    {% else %}
+                    This IP Address was previously blocked. You may unblock it after reviewing the related
+                    security
+                    cases
+                    <a class="btn btn-sm btn-danger"
+                        href="{{ url_for('unblock_ip', ip_address=notification['ip_address']) }}" role="button">Unblock
+                        IP</a>
+                    {% endif %}
+                    {% else %}
+                    {% if notification["is_active_session"]=='1' %}
+                    You can temporarily block this particular user's account
+                    <a class="btn btn-sm btn-info" href="{{ url_for('block_user', username=notification['username']) }}"
+                        role="button">
+                        Block User</a>
+                    {% else %}
+                    {%if notification['ip_address']=="175.156.103.237" %}
+                    <em>You can't block this IP Address, because it is the same as the one you are using </em>
+                    {%else%}
+                    You can block this IP Address.
+                    <a class="btn btn-sm btn-info"
+                        href="{{ url_for('block_ip', ip_address=notification['ip_address']) }}" role="button">Block
+                        IP</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    {% endfor %}
+    {%else%}
+    <div class="alert alert-success">There are no malicious activities notified</div>
+    {% endif%}
+</div>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var details = this.nextElementSibling;
+            if (details.style.display === "block") {
+                details.style.display = "none";
+            } else {
+                details.style.display = "block";
+            }
+        });
+    }
+</script>
+{% endblock %}
